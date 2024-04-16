@@ -1,0 +1,27 @@
+SPDX-FileCopyrightText: 2024 Felix Mues <felix.mues@tu-dortmund.de>
+SPDX-License-Identifier: MIT
+From 6e064790a26d9069928a7b87f4d95d8b35c861d9 Mon Sep 17 00:00:00 2001
+From: Felix <felix.mues@tu-dortmund.de>
+Date: Thu, 9 Feb 2023 01:53:31 +0100
+Subject: [PATCH] set www port to 10080 to avoid conflict on port 80
+
+---
+ docker-compose.yml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/docker-compose.yml b/docker-compose.yml
+index b2836b5..de00c96 100644
+--- a/docker-compose.yml
++++ b/docker-compose.yml
+@@ -36,7 +36,7 @@ services:
+         context: ./www
+         dockerfile: Dockerfile
+     ports:
+-      - 127.0.0.1:80:80
++      - 127.0.0.1:10080:80
+       - 127.0.0.1:443:443
+     networks:
+       - datanet
+-- 
+2.25.1
+

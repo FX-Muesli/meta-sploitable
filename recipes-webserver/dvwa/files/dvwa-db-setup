@@ -1,0 +1,37 @@
+#!/bin/sh
+# SPDX-FileCopyrightText: 2024 Felix Mues <felix.mues@tu-dortmund.de>
+# SPDX-License-Identifier: MIT
+### BEGIN INIT INFO
+# Provides:          dvwa_db
+# Required-Start:    $mysql
+# Required-Stop:     
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: provides dvwa user database
+# Description:       provides dvwa user database
+### END INIT INFO
+# Author: <felix.mues@rub.de>
+
+# Aktionen
+case "$1" in
+    start)
+        echo "creating database and users"
+        mysql -e "CREATE database dvwa;"
+        mysql -e "create user dvwa@localhost identified by 'p@ssw0rd';"
+        mysql -e "grant all on dvwa.* to dvwa@localhost;"
+        mysql -e "flush privileges;"
+        echo "creation successfull"
+        echo "make htdocs writeable for apache2"
+	    chown -R www-data:www-data /usr/share/apache2/default-site/htdocs/*
+        unlink /etc/rc5.d/${0##*/}
+        rm $0
+        ;;
+    stop)
+        echo "This script should not exist anymore"
+        ;;
+    restart)
+        echo "This script should not exist anymore"
+        ;;
+esac
+
+exit 0

@@ -1,0 +1,35 @@
+SPDX-FileCopyrightText: 2024 Felix Mues <felix.mues@tu-dortmund.de>
+SPDX-License-Identifier: MIT
+From c60023c851390672ecfac8572bfbdd6cef778764 Mon Sep 17 00:00:00 2001
+From: Felix <felix.mues@tu-dortmund.de>
+Date: Thu, 9 Feb 2023 00:56:51 +0100
+Subject: [PATCH] set mysql to arm64v8
+
+---
+ database/Dockerfile | 9 ++-------
+ 1 file changed, 2 insertions(+), 7 deletions(-)
+
+diff --git a/database/Dockerfile b/database/Dockerfile
+index 0565fd3..f1c1e86 100644
+--- a/database/Dockerfile
++++ b/database/Dockerfile
+@@ -1,14 +1,9 @@
+ # webpwnized/mutillidae:database
+ 
+ # Start with latest version of MySQL official
+-FROM mysql:debian
++FROM arm64v8/mysql:8.0
+ 
+ # Set the root password for MySQL server
+ ENV MYSQL_ROOT_PASSWORD="mutillidae"
+ 
+-# Patch the container
+-RUN apt update && \
+-    apt -y upgrade && \
+-    apt -y autoremove && \
+-    apt clean
+-
++# no patch for the container as it does not have apt
+-- 
+2.25.1
+

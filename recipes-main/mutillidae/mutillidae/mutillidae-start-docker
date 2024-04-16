@@ -1,0 +1,50 @@
+#!/bin/sh
+# SPDX-FileCopyrightText: 2024 Felix Mues <felix.mues@tu-dortmund.de>
+# SPDX-License-Identifier: MIT
+### BEGIN INIT INFO
+# Provides:          mutillidae
+# Required-Start:    docker
+# Required-Stop:     docker
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: start mutillidae
+# Description:       start mutillidae
+### END INIT INFO
+# Author: <felix.mues@rub.de>
+
+# Aktionen
+case "$1" in
+    start)
+        FILE=/opt/mutillidae-docker/prebuilt-containers/loaded
+        if [ -f "$FILE" ]; then
+            # every boot after
+            docker-compose -f /opt/mutillidae-docker/docker-compose.yml up -d
+        else 
+            # first boot
+            echo "load docker containers"
+            docker load -i /opt/mutillidae-docker/prebuilt-containers/mutillidae.tar
+            echo "resore tags"
+            while read REPOSITORY TAG IMAGE_ID
+            do
+                    echo "== Tagging $REPOSITORY $TAG $IMAGE_ID =="
+                    docker tag "$IMAGE_ID" "$REPOSITORY:$TAG"
+            done < /opt/mutillidae-docker/prebuilt-containers/mutillidae.list
+            echo "tagging successfull"
+            docker-compose -f /opt/mutillidae-docker/docker-compose.yml up -d
+            touch /opt/mutillidae-docker/prebuilt-containers/loaded
+            # unlink /etc/rc5.d/${0##*/}
+            # rm $0
+        fi
+
+        
+        ;;
+    stop)
+        docker-compose -f /opt/mutillidae-docker/docker-compose.yml down
+        ;;
+    restart)
+        docker-compose -f /opt/mutillidae-docker/docker-compose.yml down
+        docker-compose -f /opt/mutillidae-docker/docker-compose.yml up -d
+        ;;
+esac
+
+exit 0

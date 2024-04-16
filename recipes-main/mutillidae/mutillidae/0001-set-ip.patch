@@ -1,0 +1,29 @@
+SPDX-FileCopyrightText: 2024 Felix Mues <felix.mues@tu-dortmund.de>
+SPDX-License-Identifier: MIT
+From 70f3b0ca8379633ac3f26751d138b827c1481f44 Mon Sep 17 00:00:00 2001
+From: Felix <felix.mues@tu-dortmund.de>
+Date: Sun, 19 Feb 2023 20:23:54 +0100
+Subject: [PATCH] set ip
+
+---
+ docker-compose.yml | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/docker-compose.yml b/docker-compose.yml
+index b2836b5..b43a9e8 100644
+--- a/docker-compose.yml
++++ b/docker-compose.yml
+@@ -36,8 +36,8 @@ services:
+         context: ./www
+         dockerfile: Dockerfile
+     ports:
+-      - 127.0.0.1:80:80
+-      - 127.0.0.1:443:443
++      - 192.168.31.2:80:80
++      - 192.168.31.2:443:443
+     networks:
+       - datanet
+       - ldapnet
+-- 
+2.25.1
+
